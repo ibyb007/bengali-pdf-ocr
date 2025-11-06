@@ -1,5 +1,11 @@
 name: OCR PDF
-on: [push]
+
+on:
+  push:
+    paths:
+      - 'input.pdf'  # Only trigger on changes to input.pdf (optional optimization)
+  workflow_dispatch:  # Enables manual "Run workflow" button in Actions tab
+
 jobs:
   ocr:
     runs-on: ubuntu-latest
@@ -17,5 +23,5 @@ jobs:
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add output.pdf
-        git commit -m "Add OCR output" || echo "No changes"
+        git commit -m "Add OCR output ($(date '+%Y-%m-%d %H:%M:%S'))" || echo "No changes"
         git push
