@@ -32,7 +32,7 @@ def preprocess_image(img_pil):
     processed_pil = Image.fromarray(opening)
     return processed_pil
 
-def convert_pdf(input_path, output_path, dpi=300):
+def convert_pdf(input_path, output_path, dpi=400):
     print("Converting PDF to images...")
     images = convert_from_path(input_path, dpi=dpi)
 
@@ -42,8 +42,8 @@ def convert_pdf(input_path, output_path, dpi=300):
         print(f"Page {i+1}")
         # Preprocess the image for better OCR accuracy
         processed_img = preprocess_image(img)
-        # Use both English and Bengali for OCR
-        pdf_bytes = pytesseract.image_to_pdf_or_hocr(processed_img, extension='pdf', lang='eng+ben')
+        # Use Bengali as primary + English for OCR, with PSM 6 for block of text
+        pdf_bytes = pytesseract.image_to_pdf_or_hocr(processed_img, extension='pdf', lang='ben+eng', config='--psm 6')
         snippets.append(pdf_bytes)
 
     print("Merging...")
