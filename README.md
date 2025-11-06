@@ -20,8 +20,8 @@ A simple Python tool to convert scanned (image-based) Bengali PDFs into fully se
 - Verify: Run `tesseract --version` and `tesseract --list-langs` (should include `ben`).
 
 ## Installation
-1. Clone the repo:
-2. Install dependencies:
+1. Clone the repo: ```git clone https://github.com/ibyb007/bengali-pdf-ocr.git cd bengali-pdf-ocr```
+2. Install dependencies: ```pip install -r requirements.txt```
 3. ## Usage
 
 ### Local Command-Line
@@ -32,8 +32,6 @@ Example:
 - Input: A scanned Bengali document (`scanned.pdf`).
 - Output: `searchable.pdf`—open in any PDF viewer (e.g., Adobe Acrobat) and search/select text.
 
-## License
-MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 ## License
 MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 
