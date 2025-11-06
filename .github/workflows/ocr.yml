@@ -1,0 +1,21 @@
+name: OCR PDF
+on: [push]
+jobs:
+  ocr:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup
+      run: |
+        sudo apt update
+        sudo apt install tesseract-ocr tesseract-ocr-ben poppler-utils
+        pip install -r requirements.txt
+    - name: Convert
+      run: python converter.py input.pdf output.pdf
+    - name: Commit Output
+      run: |
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git add output.pdf
+        git commit -m "Add OCR output" || echo "No changes"
+        git push
