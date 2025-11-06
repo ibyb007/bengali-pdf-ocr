@@ -11,7 +11,8 @@ def convert_pdf(input_path, output_path, dpi=300):
     snippets = []
     for i, img in enumerate(images):
         print(f"Page {i+1}")
-        pdf_bytes = pytesseract.image_to_pdf_or_hocr(img, extension='pdf', lang='ben')
+        # Use both English and Bengali for OCR
+        pdf_bytes = pytesseract.image_to_pdf_or_hocr(img, extension='pdf', lang='eng+ben')
         snippets.append(pdf_bytes)
 
     print("Merging...")
