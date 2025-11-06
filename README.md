@@ -23,11 +23,7 @@ A simple Python tool to convert scanned (image-based) Bengali PDFs into fully se
 1. Clone the repo: ```git clone https://github.com/ibyb007/bengali-pdf-ocr.git cd bengali-pdf-ocr```
 2. Install dependencies: ```pip install -r requirements.txt```
 3. ## Usage
-# command
-git clone https://github.com/ibyb007/bengali-pdf-ocr.git
-cd bengali-pdf-ocr
-pip install -r requirements.txt
-python converter.py input.pdf output.pdf
+'''python converter.py input.pdf output.pdf```
 ### Local Command-Line
 Process a PDF file:
 - **Optional DPI**: Edit the script's `convert_pdf` function to accept a third arg (e.g., `dpi=400`) for higher accuracy (slower, better for low-res scans).
