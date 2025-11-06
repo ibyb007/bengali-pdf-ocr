@@ -3,7 +3,7 @@ name: OCR PDF
 on:
   push:
     paths:
-      - 'input.pdf'  # Only trigger on changes to input.pdf (optional optimization)
+      - '**/*.pdf'  # Trigger on changes to any PDF file (except output.pdf, handled in script)
   workflow_dispatch:  # Enables manual "Run workflow" button in Actions tab
 
 jobs:
@@ -14,14 +14,18 @@ jobs:
     - name: Setup
       run: |
         sudo apt update
-        sudo apt install tesseract-ocr tesseract-ocr-ben poppler-utils
+        sudo apt install tesseract-ocr tesseract-ocr-ben tesseract-ocr-eng poppler-utils
         pip install -r requirements.txt
     - name: Convert
-      run: python converter.py input.pdf output.pdf
+      run: python converter.py  # No arguments: processes all PDFs except output.pdf
     - name: Commit Output
       run: |
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
-        git add output.pdf
-        git commit -m "Add OCR output ($(date '+%Y-%m-%d %H:%M:%S'))" || echo "No changes"
-        git push
+        git add *_ocr.pdf  # Add all generated OCR outputs
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Add OCR outputs ($(date '+%Y-%m-%d %H:%M:%S'))"
+          git push
+        fi
