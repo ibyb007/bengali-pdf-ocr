@@ -32,12 +32,8 @@ Example:
 - Input: A scanned Bengali document (`scanned.pdf`).
 - Output: `searchable.pdf`—open in any PDF viewer (e.g., Adobe Acrobat) and search/select text.
 
-### As a Library
-```python
-from converter import convert_pdf
-
-convert_pdf("input.pdf", "output.pdf", dpi=300)
-
+## License
+MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 ## License
 MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
 
@@ -45,4 +41,9 @@ MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) f
 - [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) for the engine.
 - Libraries: [pdf2image](https://github.com/Belval/pdf2image), [pytesseract](https://github.com/madmaze/pytesseract), [PyMuPDF](https://github.com/pymupdf/PyMuPDF).
 
-Questions or issues? Open a GitHub Issue. Star the repo if it helps—let's make Bengali docs searchable! 🇧🇩
+Questions or issues? Open a GitHub Issue. Star the repo if it helps—let's make Bengali docs searchable! 
+### As a Library
+```python
+from converter import convert_pdf
+
+convert_pdf("input.pdf", "output.pdf", dpi=300)
