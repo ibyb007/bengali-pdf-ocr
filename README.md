@@ -21,3 +21,28 @@ A simple Python tool to convert scanned (image-based) Bengali PDFs into fully se
 
 ## Installation
 1. Clone the repo:
+2. Install dependencies:
+3. ## Usage
+
+### Local Command-Line
+Process a PDF file:
+- **Optional DPI**: Edit the script's `convert_pdf` function to accept a third arg (e.g., `dpi=400`) for higher accuracy (slower, better for low-res scans).
+
+Example:
+- Input: A scanned Bengali document (`scanned.pdf`).
+- Output: `searchable.pdf`—open in any PDF viewer (e.g., Adobe Acrobat) and search/select text.
+
+### As a Library
+```python
+from converter import convert_pdf
+
+convert_pdf("input.pdf", "output.pdf", dpi=300)
+
+## License
+MIT License—feel free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) for the engine.
+- Libraries: [pdf2image](https://github.com/Belval/pdf2image), [pytesseract](https://github.com/madmaze/pytesseract), [PyMuPDF](https://github.com/pymupdf/PyMuPDF).
+
+Questions or issues? Open a GitHub Issue. Star the repo if it helps—let's make Bengali docs searchable! 🇧🇩
