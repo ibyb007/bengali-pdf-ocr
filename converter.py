@@ -4,6 +4,33 @@ import fitz
 import sys
 import glob
 import os
+import cv2
+import numpy as np
+from PIL import Image
+
+# Set TESSDATA_PREFIX for safety (adjust if needed based on Tesseract version)
+os.environ['TESSDATA_PREFIX'] = '/usr/share/tesseract-ocr/5/tessdata'  # For Tesseract 5
+
+def preprocess_image(img_pil):
+    # Convert PIL to OpenCV format
+    img_cv = cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
+    
+    # Get grayscale
+    gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
+    
+    # Noise removal
+    denoised = cv2.medianBlur(gray, 5)
+    
+    # Thresholding
+    thresh = cv2.threshold(denoised, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+    
+    # Opening - remove small noise
+    kernel = np.ones((3, 3), np.uint8)
+    opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+    
+    # Convert back to PIL
+    processed_pil = Image.fromarray(opening)
+    return processed_pil
 
 def convert_pdf(input_path, output_path, dpi=300):
     print("Converting PDF to images...")
@@ -13,8 +40,10 @@ def convert_pdf(input_path, output_path, dpi=300):
     snippets = []
     for i, img in enumerate(images):
         print(f"Page {i+1}")
+        # Preprocess the image for better OCR accuracy
+        processed_img = preprocess_image(img)
         # Use both English and Bengali for OCR
-        pdf_bytes = pytesseract.image_to_pdf_or_hocr(img, extension='pdf', lang='eng+ben')
+        pdf_bytes = pytesseract.image_to_pdf_or_hocr(processed_img, extension='pdf', lang='eng+ben')
         snippets.append(pdf_bytes)
 
     print("Merging...")
