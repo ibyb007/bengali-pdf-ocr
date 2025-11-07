@@ -11,7 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Get changed PDF files
+      id: changed-files
+      uses: tj-actions/changed-files@v46
+      with:
+        files: '**/*.pdf'
+    - name: Check for additions or modifications
+      id: check
+      run: |
+        echo "has_changes=false" >> $GITHUB_OUTPUT
+        if [[ "${{ steps.changed-files.outputs.added_files }}" != "[]" ]] || [[ "${{ steps.changed-files.outputs.modified_files }}" != "[]" ]]; then
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        fi
     - name: Setup
+      if: steps.check.outputs.has_changes == 'true'
       run: |
         sudo apt update
         sudo apt install -y software-properties-common
@@ -20,12 +33,15 @@ jobs:
         sudo apt install tesseract-ocr tesseract-ocr-ben tesseract-ocr-eng poppler-utils
         pip install -r requirements.txt opencv-python
     - name: Check Tesseract
+      if: steps.check.outputs.has_changes == 'true'
       run: |
         tesseract --version
         tesseract --list-langs
     - name: Convert
+      if: steps.check.outputs.has_changes == 'true'
       run: python converter.py  # No arguments: processes all PDFs except output.pdf
     - name: Commit and Push Output
+      if: steps.check.outputs.has_changes == 'true'
       uses: EndBug/add-and-commit@v9
       with:
         add: '*_ocr.pdf'  # Add all generated OCR outputs
