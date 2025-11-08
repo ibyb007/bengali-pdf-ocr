@@ -1,4 +1,4 @@
-def convert_pdf(input_path, output_path, dpi=400):
+def convert_pdf(input_path, output_path, dpi=500):
     print("Converting PDF to images...")
     images = convert_from_path(input_path, dpi=dpi)
 
