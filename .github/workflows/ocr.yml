@@ -11,6 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Check for input PDFs
+      run: |
+        INPUT_PDFS=$(find . -name "*.pdf" -not -path "*/output.pdf" -not -path "*_ocr.pdf" 2>/dev/null | wc -l)
+        if [ "$INPUT_PDFS" -eq 0 ]; then
+          echo "No input PDFs found—skipping OCR processing."
+          exit 0
+        fi
+        echo "Found $INPUT_PDFS input PDF(s) to process."
+      shell: bash
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
     - name: Setup
       run: |
         sudo apt update
@@ -19,12 +35,15 @@ jobs:
         sudo apt update
         sudo apt install tesseract-ocr tesseract-ocr-ben tesseract-ocr-eng poppler-utils
         pip install -r requirements.txt opencv-python
+
     - name: Check Tesseract
       run: |
         tesseract --version
         tesseract --list-langs
+
     - name: Convert
       run: python converter.py  # No arguments: processes all PDFs except output.pdf
+
     - name: Commit and Push Output
       uses: EndBug/add-and-commit@v9
       with:
