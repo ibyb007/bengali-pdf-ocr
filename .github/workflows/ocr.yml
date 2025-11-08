@@ -3,9 +3,7 @@ name: OCR PDF
 on:
   push:
     paths:
-      - '**/*.pdf'  # Trigger on changes to any PDF file (except output.pdf, handled in script)
-    paths-ignore:
-      - 'output.pdf'  # Ignore changes to output.pdf to prevent unnecessary triggers
+      - '**/*.pdf'  # Trigger on changes to any PDF file (handled in script to skip output.pdf)
   workflow_dispatch:  # Enables manual "Run workflow" button in Actions tab
 
 jobs:
