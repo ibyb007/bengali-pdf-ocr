@@ -59,14 +59,18 @@ def convert_pdf(input_path, output_path, dpi=500):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
+        # For single-file mode, optionally add a check to skip if input looks like an output
+        if sys.argv[1].lower().endswith('_ocr.pdf'):
+            print(f"Skipping {sys.argv[1]}: Appears to be an OCR output file.")
+            sys.exit(0)
         convert_pdf(sys.argv[1], sys.argv[2])
     else:
         pdf_files = glob.glob('*.pdf')
-        for pdf_file in pdf_files:
-            if os.path.basename(pdf_file).lower() != 'output.pdf':
-                output_path = pdf_file.replace('.pdf', '_ocr.pdf')
-                convert_pdf(pdf_file, output_path)
+        input_files = [f for f in pdf_files if not f.lower().endswith('_ocr.pdf')]
+        for pdf_file in input_files:
+            output_path = pdf_file.replace('.pdf', '_ocr.pdf')
+            convert_pdf(pdf_file, output_path)
         if not pdf_files:
             print("No PDF files found in the current directory.")
-        elif all(os.path.basename(f).lower() == 'output.pdf' for f in pdf_files):
-            print("Only output.pdf found; no other PDFs to process.")
+        elif not input_files:
+            print("No input PDFs found; only OCR outputs present.")
